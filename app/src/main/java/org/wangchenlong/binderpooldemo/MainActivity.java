@@ -41,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mTvEncryptMsg = (TextView) findViewById(R.id.main_tv_encrypt_msg);
         mTvAddMsg = (TextView) findViewById(R.id.main_tv_add_msg);
-//        new Thread(new Runnable() {
-//            @Override public void run() {
-//                doWork();
-//            }
-//        }).start();
     }
 
+    /**
+     * 加密解密的点击回调
+     *
+     * @param view 界面
+     */
     public void encryptMsg(View view) {
         new Thread(new Runnable() {
             @Override public void run() {
@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 加法的点击回调
+     *
+     * @param view 视图
+     */
     public void addNumbers(View view) {
         new Thread(new Runnable() {
             @Override public void run() {
@@ -102,30 +107,6 @@ public class MainActivity extends AppCompatActivity {
             hm.what = 1;
             hm.obj = result + "";
             mHandler.sendMessage(hm);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 工作
-    private void doWork() {
-        BinderPool binderPool = BinderPool.getInstance(getApplicationContext());
-        IBinder securityBinder = binderPool.queryBinder(BinderPool.BINDER_SECURITY_CENTER);
-        mISecurityCenter = SecurityCenterImpl.asInterface(securityBinder);
-        String msg = "Hello, I am Spike!";
-        try {
-            String encryptMsg = mISecurityCenter.encrypt(msg);
-            Log.e(TAG, "加密信息: " + encryptMsg);
-            String decryptMsg = mISecurityCenter.decrypt(encryptMsg);
-            Log.e(TAG, "解密信息: " + decryptMsg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        IBinder computeBinder = binderPool.queryBinder(BinderPool.BINDER_COMPUTE);
-        mICompute = ComputeImpl.asInterface(computeBinder);
-        try {
-            Log.e(TAG, "12 + 12 = " + mICompute.add(12, 12));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
